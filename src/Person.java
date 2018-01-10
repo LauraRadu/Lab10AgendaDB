@@ -3,13 +3,23 @@ public class Person {
     private String name;
     private String phoneNumber;
 
+    Person(String name, String phoneNumber) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
+
+    Person() {
+
+    }
+
     public double getId() {
         return id;
     }
 
-    public void setId(double id) {
-        this.id = id;
-    }
+//nu ar trebui sa avem setter la id
+//    public void setId(double id) {
+//        this.id = id;
+//    }
 
     public String getName() {
         return name;
