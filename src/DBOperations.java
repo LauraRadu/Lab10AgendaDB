@@ -1,33 +1,26 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
-/**
- * Created by condor on 26/02/15.
- * FastTrackIT, 2015
- * <p/>
- * DEMO ONLY PURPOSES, IT MIGHT CONTAINS INTENTIONALLY ERRORS OR ESPECIALLY BAD PRACTICES
- * <p>
- * make sure you refactor it and remove lots of bad practices like loading the driver multiple times or
- * repeating the same common code multiple times
- * <p>
- * BTW, exercise 1: how we reorg this/refactor in small pieces
- */
 
 public class DBOperations {
 
-    public static List read() throws ClassNotFoundException, SQLException {
-        // 1. load driver, no longer needed in new versions of JDBC
-        Class.forName("org.postgresql.Driver");
+    private static Connection conn;
 
-        // 2. define connection params to db
+    public static void connectToDB() {
+
         final String URL = "jdbc:postgresql://54.93.65.5:5432/laura7";
         final String USERNAME = "fasttrackit_dev";
         final String PASSWORD = "fasttrackit_dev";
 
-        // 3. obtain a connection
-        Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        try {
+            conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List read() throws ClassNotFoundException, SQLException {
+        connectToDB();
 
         // 4. create a query statement
         Statement st = conn.createStatement();
@@ -57,17 +50,7 @@ public class DBOperations {
 
 
     public static void addAgenda(Person p) throws ClassNotFoundException, SQLException {
-
-        // 1. load driver in JVM, no longer needed in new versions of JDBC
-        Class.forName("org.postgresql.Driver");
-
-        // 2. define connection params to db
-        final String URL = "jdbc:postgresql://54.93.65.5:5432/laura7";
-        final String USERNAME = "fasttrackit_dev";
-        final String PASSWORD = "fasttrackit_dev";
-
-        // 3. obtain a connection
-        Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        connectToDB();
 
         // 4. create a query statement
         PreparedStatement pSt = conn.prepareStatement("INSERT INTO AGENDA (userNAME, PHONENUMBER) VALUES (?,?)");
@@ -85,17 +68,7 @@ public class DBOperations {
 
 
     public static void delete(Person p) throws ClassNotFoundException, SQLException {
-
-        // 1. load driver, no longer needed in new versions of JDBC
-        Class.forName("org.postgresql.Driver");
-
-        // 2. define connection params to db
-        final String URL = "jdbc:postgresql://54.93.65.5:5432/laura7";
-        final String USERNAME = "fasttrackit_dev";
-        final String PASSWORD = "fasttrackit_dev";
-
-        // 3. obtain a connection
-        Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        connectToDB();
 
         // 4. create a query statement
         PreparedStatement pSt = conn.prepareStatement("DELETE FROM agenda WHERE username=?");
@@ -112,17 +85,7 @@ public class DBOperations {
 
 
     public static List findPerson(Person p)  throws ClassNotFoundException, SQLException{
-
-        // 1. load driver, no longer needed in new versions of JDBC
-        Class.forName("org.postgresql.Driver");
-
-        // 2. define connection params to db
-        final String URL = "jdbc:postgresql://54.93.65.5:5432/laura7";
-        final String USERNAME = "fasttrackit_dev";
-        final String PASSWORD = "fasttrackit_dev";
-
-        // 3. obtain a connection
-        Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        connectToDB();
 
         // 4. create a query statement
         PreparedStatement pSt = conn.prepareStatement("SELECT username, phonenumber FROM agenda WHERE username like concat('%',?,'%')");
@@ -148,17 +111,7 @@ public class DBOperations {
 
 
     public static void modify(Person p, String newName, String newPhone) throws ClassNotFoundException, SQLException {
-
-        // 1. load driver, no longer needed in new versions of JDBC
-        Class.forName("org.postgresql.Driver");
-
-        // 2. define connection params to db
-        final String URL = "jdbc:postgresql://54.93.65.5:5432/laura7";
-        final String USERNAME = "fasttrackit_dev";
-        final String PASSWORD = "fasttrackit_dev";
-
-        // 3. obtain a connection
-        Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        connectToDB();
 
         // 4. create a query statement
         PreparedStatement pSt = conn.prepareStatement("UPDATE agenda SET username=?, phonenumber=? WHERE username=?"); //so we have 3 params
